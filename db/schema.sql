@@ -148,3 +148,33 @@ begin
 exception when others then
     raise notice 'pg_cron no disponible (%). Habilítelo en Database > Extensions y ejecute: select cron.schedule(''respira-revisar-silencio'', ''* * * * *'', ''select revisar_silencio()'');', sqlerrm;
 end $$;
+
+-- Seguridad: la API automática de Supabase (PostgREST) expone las tablas de public
+-- a los roles anon y authenticated. Se cierra todo el acceso por defecto:
+--  1. Row Level Security activado sin políticas: anon y authenticated no ven ni escriben filas.
+--  2. Sin permisos de tabla, vista ni función para esos roles.
+-- El servicio de ingesta se conecta como postgres (propietario de las tablas), que no pasa por RLS.
+-- En Supabase estos roles ya existen. En una base local de prueba se crean para que el esquema se aplique igual.
+do $$
+begin
+    if not exists (select 1 from pg_roles where rolname = 'anon') then
+        create role anon nologin;
+    end if;
+    if not exists (select 1 from pg_roles where rolname = 'authenticated') then
+        create role authenticated nologin;
+    end if;
+end $$;
+
+alter table brigadistas enable row level security;
+alter table dispositivos enable row level security;
+alter table sesiones enable row level security;
+alter table lecturas enable row level security;
+alter table umbrales enable row level security;
+alter table alertas enable row level security;
+alter table estado_alerta enable row level security;
+
+revoke all on all tables in schema public from anon, authenticated;
+revoke all on all sequences in schema public from anon, authenticated;
+revoke all on all functions in schema public from anon, authenticated;
+-- Las vistas se ejecutan con permisos del propietario: también se cierran.
+revoke all on ultimo_estado from anon, authenticated;

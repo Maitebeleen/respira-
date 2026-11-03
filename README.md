@@ -2,6 +2,12 @@
 
 Prototipo de telemetría para la máscara de protección respiratoria de brigadistas.
 
+**Empieza por [docs/guia/00-leeme-primero.md](docs/guia/00-leeme-primero.md).** Ahí está todo explicado en palabras simples, con diagramas.
+
+- [Guía completa](docs/guia/00-leeme-primero.md): qué es cada servicio, cómo viaja un dato, qué hicimos y por qué, cómo replicar y cómo modificar.
+- [Cuentas y despliegue](docs/cuentas_y_despliegue.md): pasos originales para crear las cuentas.
+
+- `docs/guia/`: guía completa para entender y seguir el proyecto.
 - `docs/superpowers/specs/`: documento de diseño del MVP.
 - `docs/cuentas_y_despliegue.md`: cuentas que hay que crear y pasos para desplegar.
 - `db/schema.sql`: esquema de PostgreSQL (Supabase). Incluye la revisión de silencio con pg_cron.
@@ -22,4 +28,4 @@ Prototipo de telemetría para la máscara de protección respiratoria de brigadi
 ## Estado
 
 - Hecho: esquema, ingesta con idempotencia, sesiones, alertas con histéresis, registro de máscaras, simulador, pruebas.
-- Pendiente: firmware del ESP32, dashboard web, umbrales en base de datos, calibración del MQ-7.
+- Pendiente: firmware del ESP32, dashboard web, umbrales en base de datos, calibración del MQ-7, autenticación de la consulta de estado y rotación de claves.
