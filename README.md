@@ -16,6 +16,8 @@ Prototipo de telemetría para la máscara de protección respiratoria de brigadi
   - `scripts/registrar.py`: registra máscaras (genera token) y brigadistas (seudónimo).
   - `tests/`: pruebas de reglas y de la API contra PostgreSQL real.
 - `simulador/simular.py`: envía lecturas simuladas con el contrato del ESP32.
+- `simulador/chequeo.py`: prueba el servicio desplegado de punta a punta.
+- `firmware/respira-esp32/`: programa de la máscara (ESP32 + MQ-7). Ver [docs/guia/08-esp32-mq7.md](docs/guia/08-esp32-mq7.md).
 
 ## Probar localmente
 
@@ -28,4 +30,4 @@ Prototipo de telemetría para la máscara de protección respiratoria de brigadi
 ## Estado
 
 - Hecho: esquema, ingesta con idempotencia, sesiones, alertas con histéresis, registro de máscaras, simulador, pruebas.
-- Pendiente: firmware del ESP32, dashboard web, umbrales en base de datos, calibración del MQ-7, autenticación de la consulta de estado y rotación de claves.
+- Pendiente: prueba del firmware con hardware real, dashboard web, umbrales en base de datos, calibración del MQ-7, autenticación de la consulta de estado y rotación de claves.

@@ -89,6 +89,18 @@ Por qué el servicio sigue funcionando: Render se conecta como `postgres`, el du
 
 Lo que todavía falta: la consulta de `/v1/estado` no tiene autenticación. Cualquiera con la dirección puede verla. Antes de usar datos reales hay que cerrarla.
 
+## Fase 8: pruebas en producción y corrección de un error
+
+Escribimos `simulador/chequeo.py`, un script que prueba el servicio desplegado: salud, envío válido, duplicados, token malo, brigadista desconocido, valor fuera de rango, alerta crítica y estado. Todos los chequeos pasaron.
+
+Durante la prueba encontramos un error real. Si una máscara se apagaba con la sesión abierta, la revisión de silencio creaba una alerta `SIN_SENAL` cada 5 minutos **para siempre**, porque la sesión nunca se cerraba si no llegaban más lotes. Lo corregimos así:
+1. La revisión primero crea el aviso (si la máscara lleva más de 60 segundos sin lecturas).
+2. Después cierra la sesión si lleva más de 15 minutos sin lecturas. El cierre queda con la hora de la última lectura.
+
+Lo verificamos en producción: la sesión se cerró sola a las 22:02, la última alerta de silencio fue a las 21:59 y no volvió a repetirse. Además agregamos una prueba automática para este caso.
+
+También escribimos el firmware del ESP32 (`firmware/respira-esp32/`) y lo compilamos con PlatformIO. Compila sin errores y ocupa el 86,7 % de la memoria del programa. Todavía no lo probamos con un ESP32 y un sensor físicos; eso lo hace quien tenga el hardware, siguiendo [08-esp32-mq7.md](08-esp32-mq7.md).
+
 ## Errores que tuvimos y cómo los resolvimos
 
 | Problema | Causa | Solución |

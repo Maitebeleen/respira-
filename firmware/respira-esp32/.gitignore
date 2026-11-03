@@ -1,0 +1,3 @@
+# Credenciales y configuración local: nunca subir
+include/config.h
+.pio/

@@ -123,6 +123,8 @@ language plpgsql as $$
 declare
     n integer := 0;
 begin
+    -- 1. Avisar: sesiones abiertas sin lecturas hace más de 60 segundos.
+    --    No se repite durante 5 minutos si ya hay una alerta sin reconocer.
     insert into alertas (dispositivo_id, sesion_id, tipo, nivel, valor, umbral)
     select s.dispositivo_id, s.id, 'SIN_SENAL', 'CRITICA',
            extract(epoch from now() - max(l.ts_recepcion)), 60
@@ -136,6 +138,17 @@ begin
            where a.sesion_id = s.id and a.tipo = 'SIN_SENAL'
              and a.reconocida_en is null and a.creada_en > now() - interval '5 minutes');
     get diagnostics n = row_count;
+
+    -- 2. Cerrar: sesiones sin lecturas hace más de 15 minutos (la máscara se apagó o se fue).
+    --    Así el aviso deja de repetirse indefinidamente.
+    update sesiones s
+       set fin = coalesce(
+           (select max(l.ts_recepcion) from lecturas l where l.sesion_id = s.id), s.inicio)
+     where s.fin is null
+       and coalesce(
+           (select max(l.ts_recepcion) from lecturas l where l.sesion_id = s.id), s.inicio)
+           < now() - interval '15 minutes';
+
     return n;
 end $$;
 

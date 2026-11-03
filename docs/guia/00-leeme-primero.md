@@ -16,10 +16,11 @@ Esta carpeta documenta solo la parte de datos: cómo la máscara envía informac
 | Servicio que recibe datos (Render) | Desplegado y respondiendo |
 | Código en GitHub | Subido al repositorio de Maite |
 | Prueba de punta a punta | Hecha con datos simulados |
-| Máscara real (ESP32) | Pendiente |
+| Firmware del ESP32 | Escrito (`firmware/respira-esp32/`), pendiente de prueba con hardware real |
+| Máscara real (ESP32) | Pendiente de conectar y probar con Maite |
 | Dashboard web | Pendiente |
 | Avisos por Telegram | Pendiente, opcional |
-| Calibración del sensor MQ-7 | Pendiente |
+| Calibración del sensor MQ-7 | Pendiente: hay que validarla contra un detector de referencia |
 
 ## Mapa de esta carpeta
 
@@ -30,6 +31,7 @@ Esta carpeta documenta solo la parte de datos: cómo la máscara envía informac
 5. [05-modificar.md](05-modificar.md): cómo cambiar umbrales, agregar campos, máscaras o brigadistas, y dónde tocar el código.
 6. [06-operacion.md](06-operacion.md): cómo revisar que todo funciona, qué hacer cuando falla y qué límites tienen los planes gratuitos.
 7. [07-glosario.md](07-glosario.md): palabras técnicas explicadas en simple.
+8. [08-esp32-mq7.md](08-esp32-mq7.md): cómo conectar el ESP32 y el sensor MQ-7, probarlos y dejar la máscara enviando datos.
 
 ## Antes de empezar, cuatro cosas importantes
 

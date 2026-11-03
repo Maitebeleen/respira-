@@ -115,3 +115,17 @@ def test_estado_muestra_brigadista_asignado(cliente):
     assert datos[0]["dispositivo"] == "RESP-0001"
     assert datos[0]["brigadista"] == "B-017"
     assert datos[0]["co_ppm"] == 8.0
+
+
+def test_silencio_cierra_sesion_tras_15_minutos(cliente):
+    enviar(cliente, lote([lectura(1)]))
+    url = os.environ["TEST_DATABASE_URL"]
+    with psycopg.connect(url, autocommit=True) as conn:
+        # Simular que la última lectura fue hace 20 minutos.
+        conn.execute("update lecturas set ts_recepcion = now() - interval '20 minutes'")
+        conn.execute("select revisar_silencio()")
+        abiertas = conn.execute("select count(*) from sesiones where fin is null").fetchone()[0]
+        alertas = conn.execute(
+            "select count(*) from alertas where tipo = 'SIN_SENAL'").fetchone()[0]
+    assert abiertas == 0
+    assert alertas == 1

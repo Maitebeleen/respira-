@@ -105,6 +105,16 @@ Falta:
 - Revisar la Ley 21.719 (datos personales y sensibles) con alguien del área legal antes de guardar datos reales de personas.
 - Validar umbrales y sensor con prevención de riesgos.
 
+## Quién tiene cada cuenta (hoy)
+
+| Servicio | Cuenta de | Qué pasa si esa persona no está disponible |
+|---|---|---|
+| Supabase (base de datos, proyecto `respira-plus`) | La cuenta de Maite (organización "Respira+") | Solo esa cuenta puede cambiar la base o generar claves nuevas. Hay que tenerla accesible |
+| Render (servicio `respira-ingesta`) | La cuenta de Jean | Solo esa cuenta puede cambiar variables o redesplegar. Conviene invitar a Maite como miembro del equipo en Render |
+| GitHub (repositorio `Maitebeleen/respira-`) | Maite, con Jean como colaborador | Jean puede subir cambios; Maite es dueña del repositorio |
+
+Recomendación: que las dos cuentas de servicio tengan al menos dos personas con acceso. Así no queda todo en una sola persona.
+
 ## Quién hace qué
 
 Definir esto antes de usar el sistema en terreno:
